@@ -1,7 +1,7 @@
 /* Search */
 .search-wrapper { position: relative; display: flex; align-items: center; }
 .search-icon { position: absolute; left: 12px; width: 16px; height: 16px; color: var(--text-muted); pointer-events: none; }
-.search-input { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px 8px 36px; color: var(--text); font-size: 0.875rem; width: 220px; transition: all var(--transition); outline: none; }
+.search-input { background: var(--bg-3); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px 8px 12px; color: var(--text); font-size: 0.875rem; width: 220px; transition: all var(--transition); outline: none; }
 .search-input:focus { border-color: var(--primary); width: 280px; background: var(--bg-card); box-shadow: 0 0 0 3px rgba(56,97,251,0.15); }
 [data-theme="dark"] .search-input:focus { box-shadow: 0 0 0 3px rgba(56,97,251,0.15); }
 .search-dropdown { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: none; z-index: 200; max-height: 360px; overflow-y: auto; }

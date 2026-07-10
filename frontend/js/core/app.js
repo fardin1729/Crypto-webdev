@@ -46,13 +46,15 @@ async function init() {
   document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 
   const si=document.getElementById('search-input');
-  si.addEventListener('input',e=>{ clearTimeout(state.searchDebounce); state.searchDebounce=setTimeout(()=>handleSearch(e.target.value),250); });
-  // Lazy-load coin list only when user actually uses search (saves rate limit slots)
-  si.addEventListener('focus',()=>{
-    loadSearchList(); // no-op if already loaded
-    if(si.value) document.getElementById('search-dropdown').classList.add('open');
-  });
-  document.addEventListener('click',e=>{ if(!e.target.closest('#search-wrapper')) document.getElementById('search-dropdown').classList.remove('open'); });
+  if (si) {
+    si.addEventListener('input',e=>{ clearTimeout(state.searchDebounce); state.searchDebounce=setTimeout(()=>handleSearch(e.target.value),250); });
+    // Lazy-load coin list only when user actually uses search (saves rate limit slots)
+    si.addEventListener('focus',()=>{
+      loadSearchList(); // no-op if already loaded
+      if(si.value) document.getElementById('search-dropdown').classList.add('open');
+    });
+    document.addEventListener('click',e=>{ if(!e.target.closest('#search-wrapper')) { const dd = document.getElementById('search-dropdown'); if(dd) dd.classList.remove('open'); } });
+  }
 
   document.querySelectorAll('.filter-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{ document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active'); state.page=1; loadCoins(); });
