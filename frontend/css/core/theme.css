@@ -1,0 +1,36 @@
+/* ═══ CSS VARIABLES — CoinVista (Dark Mode Only) ═══ */
+:root,
+[data-theme="dark"] {
+  --bg: transparent;
+  --bg-2: rgba(0, 0, 0, 0.2);
+  --bg-3: rgba(0, 0, 0, 0.3);
+  --bg-card: rgba(0, 0, 0, 0.2);
+  --bg-card-hover: rgba(0, 0, 0, 0.4);
+  --border: rgba(255, 255, 255, 0.15);
+  --border-hover: rgba(255, 255, 255, 0.3);
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --text-dim: #6e7681;
+  --primary: #3861fb;
+  --primary-light: #7b9fff;
+  --accent: #16c784;
+  --green: #16c784;
+  --red: #ea3943;
+  --yellow: #f0b90b;
+  --radius: 8px;
+  --radius-sm: 6px;
+  --shadow: 0 4px 20px rgba(0,0,0,0.4);
+  --shadow-glow: 0 0 32px rgba(56,97,251,0.2);
+  --font: 'Inter', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --transition: 0.2s ease;
+
+  /* Component Overrides */
+  --bg-nav: rgba(0, 0, 0, 0.2);
+  --bg-nav-scrolled: rgba(0, 0, 0, 0.4);
+  --border-nav-scrolled: rgba(255, 255, 255, 0.15);
+  --hero-grid: rgba(255, 255, 255, 0.03);
+  --orb-opacity: 0.18;
+  --orb-mix-blend: screen;
+  --grid-color: rgba(255, 255, 255, 0.015);
+}

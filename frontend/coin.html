@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoinVista - Advanced Coin Analysis</title>
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪙</text></svg>">
+  
+  <link rel="stylesheet" href="css/core/base.css">
+  <link rel="stylesheet" href="css/core/layout.css">
+  <link rel="stylesheet" href="css/components/components.css">
+  <link rel="stylesheet" href="css/components/cards.css">
+  <link rel="stylesheet" href="css/components/modals.css">
+  <link rel="stylesheet" href="css/core/animations.css">
+  <link rel="stylesheet" href="css/core/theme.css">
+
+  <style>
+    /* Styling overrides for the full-page layout */
+    .detail-container {
+      margin-top: 100px;
+      margin-bottom: 60px;
+      padding: 0 20px;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    @media (max-width: 992px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .coin-header-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .detail-chart-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      transition: transform 0.2s ease;
+    }
+    .back-btn:hover {
+      transform: translateX(-4px);
+    }
+    .detail-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .detail-coin-icon {
+      width: 48px;
+      height: 48px;
+    }
+    .detail-coin-name {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+    .detail-coin-symbol {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .detail-price {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+    .detail-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .detail-stat {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .detail-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .detail-stat-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .detail-predict-panel {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-top: 30px;
+    }
+    @media (max-width: 992px) {
+      .detail-predict-panel {
+        grid-column: span 1;
+      }
+    }
+  </style>
+
+  <!-- External libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+</head>
+<body data-theme="dark">
+
+  <!-- ═══ ANIMATED SHADER BACKGROUND ═══ -->
+  <div id="shader-bg-container" style="position: fixed; inset: 0; z-index: -3; overflow: hidden; pointer-events: none; background: #000;"></div>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="13" stroke="url(#navGrad)" stroke-width="2"/>
+            <path d="M10 14 L14 8 L18 14 L14 20 Z" fill="url(#navGrad)"/>
+            <defs>
+              <linearGradient id="navGrad" x1="0" y1="0" x2="28" y2="28">
+                <stop offset="0%" stop-color="#7c3aed"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="nav-title">Coin<span class="gradient-text">Vista</span></span>
+      </a>
+      <div class="nav-links" style="margin-right: auto; margin-left: 30px;">
+        <a href="index.html" class="nav-link">Explore Markets</a>
+        <a href="index.html?view=news" class="nav-link">Insights</a>
+      </div>
+
+      <div class="nav-actions" style="display: flex; align-items: center; gap: 16px;">
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ COIN DETAILS ═══ -->
+  <main class="detail-container">
+    <div class="container">
+      <a href="index.html" class="back-btn">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 8H1M1 8L8 15M1 8L8 1"/>
+        </svg>
+        Back to Home
+      </a>
+
+      <div id="detail-loading" class="table-loading">
+        <div class="spinner"></div>
+        <p>Loading coin analysis data…</p>
+      </div>
+
+      <div id="detail-error" style="display: none; text-align: center; padding: 40px 20px;">
+        <div style="font-size: 3rem; margin-bottom: 20px;">⚠️</div>
+        <h3 id="error-message">Failed to load coin analysis details</h3>
+        <button onclick="window.location.reload()" class="btn-run-predict" style="margin-top: 20px;">Retry Load</button>
+      </div>
+
+      <div id="detail-content" style="display: none;">
+        <div class="detail-grid">
+          
+          <!-- Left side: Stats Card -->
+          <div class="coin-header-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div class="detail-title-wrap">
+                <img id="coin-image" class="detail-coin-icon" src="" alt=""/>
+                <div>
+                  <div id="coin-name" class="detail-coin-name">Loading</div>
+                  <span id="coin-symbol" class="detail-coin-symbol"></span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: baseline; gap: 12px; margin-top: 10px;">
+              <span id="coin-price" class="detail-price">$0.00</span>
+              <span id="coin-rank" class="rank-badge">Rank #1</span>
+            </div>
+
+            <div style="display: flex; gap: 15px;" id="price-changes-row">
+              <!-- 24h & 7d pills will inject here -->
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 10px 0;">
+
+            <div class="detail-stats-grid">
+              <div class="detail-stat">
+                <div class="detail-stat-label">Market Cap</div>
+                <div class="detail-stat-value" id="stat-mcap">-</div>
+              </div>
+              <div class="detail-stat">
+                <div class="detail-stat-label">24h Volume</div>
+                <div class="detail-stat-value" id="stat-volume">-</div>
+              </div>
+              <div class="detail-stat">
+                <div class="detail-stat-label">24h High</div>
+                <div class="detail-stat-value" id="stat-high">-</div>
+              </div>
+              <div class="detail-stat">
+                <div class="detail-stat-label">24h Low</div>
+                <div class="detail-stat-value" id="stat-low">-</div>
+              </div>
+              <div class="detail-stat">
+                <div class="detail-stat-label">Circulating Supply</div>
+                <div class="detail-stat-value" id="stat-circulating">-</div>
+              </div>
+              <div class="detail-stat">
+                <div class="detail-stat-label">Max Supply</div>
+                <div class="detail-stat-value" id="stat-max">-</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right side: Chart Card -->
+          <div class="detail-chart-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h3 class="modal-chart-title" style="margin: 0;">Price History</h3>
+              <div class="filter-tabs" style="margin: 0; padding: 4px; border-radius: 8px;">
+                <button class="filter-tab" id="btn-chart-1h" style="padding: 6px 10px; font-size: 0.8rem;">1h</button>
+                <button class="filter-tab" id="btn-chart-24h" style="padding: 6px 10px; font-size: 0.8rem;">24h</button>
+                <button class="filter-tab" id="btn-chart-7d" style="padding: 6px 10px; font-size: 0.8rem;">7d</button>
+                <button class="filter-tab active" id="btn-chart-30d" style="padding: 6px 10px; font-size: 0.8rem;">30d</button>
+                <button class="filter-tab" id="btn-chart-1y" style="padding: 6px 10px; font-size: 0.8rem;">1y</button>
+              </div>
+            </div>
+            <div class="modal-chart-wrap" style="height: 320px;">
+              <canvas id="detail-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Bottom: LSTM Prediction Panel -->
+          <div class="detail-predict-panel">
+            <div class="predict-panel-header" style="margin-bottom: 20px;">
+              <div class="predict-title-wrap">
+                <span class="predict-badge">📈 LSTM Model</span>
+                <div>
+                  <div class="predict-heading">LSTM Price Prediction Model</div>
+                  <div class="predict-sub">Neural network trained on real-time historical data directly in your browser</div>
+                </div>
+              </div>
+              <button class="btn-run-predict" id="btn-run-predict">Run ML Prediction</button>
+            </div>
+
+            <div id="predict-working" style="display:none; margin: 20px 0;">
+              <div class="predict-progress-bar"><div class="predict-progress-fill" id="predict-fill"></div></div>
+              <div class="predict-progress-label" id="predict-label">Initialising…</div>
+            </div>
+
+            <div id="predict-result" style="display:none;">
+              <div class="predict-stats-row" id="predict-stats" style="margin-bottom: 24px;"></div>
+              <div class="predict-chart-wrap" style="height: 340px;"><canvas id="predict-chart"></canvas></div>
+            </div>
+
+            <div id="predict-error" class="predict-error" style="display:none; margin: 15px 0;"></div>
+
+            <p class="predict-disclaimer" style="margin-top: 15px;">⚠️ Educational simulation only. LSTM models look at past prices and do not account for external market news, sentiments, or regulations. Never use for trading decisions.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- JS Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="js/ui/shader-bg.js"></script>
+  <script src="js/core/state.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/theme.js"></script>
+  <script src="js/services/prediction.js"></script>
+  <script src="js/pages/coinDetail.js"></script>
+</body>
+</html>

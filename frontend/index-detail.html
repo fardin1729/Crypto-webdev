@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoinVista - Market Index Details</title>
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+  
+  <link rel="stylesheet" href="css/core/base.css">
+  <link rel="stylesheet" href="css/core/layout.css">
+  <link rel="stylesheet" href="css/components/components.css">
+  <link rel="stylesheet" href="css/components/cards.css">
+  <link rel="stylesheet" href="css/components/modals.css">
+  <link rel="stylesheet" href="css/core/animations.css">
+  <link rel="stylesheet" href="css/core/theme.css">
+
+  <style>
+    .index-detail-container {
+      margin-top: 100px;
+      margin-bottom: 60px;
+      padding: 0 20px;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 25px;
+      transition: transform 0.2s ease;
+    }
+    .back-btn:hover {
+      transform: translateX(-4px);
+    }
+    .index-showcase-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 30px;
+      margin-top: 20px;
+    }
+    @media (max-width: 992px) {
+      .index-showcase-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .index-info-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: var(--shadow);
+    }
+    .index-visual-card {
+      background: var(--bg-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 350px;
+      box-shadow: var(--shadow);
+    }
+    .index-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 15px;
+    }
+    .index-tagline {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+    .index-metric-box {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .index-metric-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .index-metric-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .gauge-container {
+      position: relative;
+      width: 240px;
+      height: 140px;
+      margin-bottom: 20px;
+    }
+    .gauge-svg {
+      width: 100%;
+      height: 100%;
+    }
+    .gauge-text-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
+    .gauge-score {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+    .gauge-label {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .custom-score-badge {
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
+    .custom-score-badge span {
+      background: inherit;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <!-- ═══ ANIMATED SHADER BACKGROUND ═══ -->
+  <div id="shader-bg-container" style="position: fixed; inset: 0; z-index: -3; overflow: hidden; pointer-events: none; background: #000;"></div>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="13" stroke="url(#navGrad)" stroke-width="2"/>
+            <path d="M10 14 L14 8 L18 14 L14 20 Z" fill="url(#navGrad)"/>
+            <defs>
+              <linearGradient id="navGrad" x1="0" y1="0" x2="28" y2="28">
+                <stop offset="0%" stop-color="#7c3aed"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="nav-title">Coin<span class="gradient-text">Vista</span></span>
+      </a>
+      <div class="nav-links" style="margin-right: auto; margin-left: 30px;">
+        <a href="index.html" class="nav-link">Explore Markets</a>
+        <a href="index.html?view=news" class="nav-link">Insights</a>
+      </div>
+
+      <div class="nav-actions" style="display: flex; align-items: center; gap: 16px;">
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ INDEX DETAIL CONTENT ═══ -->
+  <main class="index-detail-container">
+    <div class="container">
+      <a href="index.html" class="back-btn">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 8H1M1 8L8 15M1 8L8 1"/>
+        </svg>
+        Back to Home
+      </a>
+
+      <div id="index-loading" class="table-loading">
+        <div class="spinner"></div>
+        <p>Loading index analytics data…</p>
+      </div>
+
+      <div id="index-content" style="display: none;">
+        <div class="index-showcase-grid">
+          
+          <!-- Left: Info & Explanation -->
+          <div class="index-info-card">
+            <h2 id="index-title" class="index-title">Loading Index</h2>
+            <p id="index-tagline" class="index-tagline">Loading description...</p>
+            
+            <h3 style="margin-bottom: 16px; font-size: 1.1rem; color: var(--text);">Key Component Details</h3>
+            <div id="index-metrics-list">
+              <!-- Metric blocks will inject here -->
+            </div>
+          </div>
+
+          <!-- Right: Visualizer (Gauge, score, charts) -->
+          <div class="index-visual-card">
+            <h3 style="margin-bottom: 25px; color: var(--text-muted); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;">Live Indicator Status</h3>
+            
+            <!-- Gauge wrapper (shown for Fear & Greed) -->
+            <div id="visual-gauge-wrap" class="gauge-container" style="display: none;">
+              <svg class="gauge-svg" viewBox="0 0 120 70">
+                <path d="M10,65 A52,52 0 0,1 110,65" fill="none" stroke="#21262d" stroke-width="10" stroke-linecap="round"/>
+                <path d="M10,65 A52,52 0 0,1 110,65" fill="none" stroke="url(#visualGrad)" stroke-width="10" stroke-linecap="round"/>
+                <defs>
+                  <linearGradient id="visualGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"   stop-color="#ea3943"/>
+                    <stop offset="25%"  stop-color="#f0b90b"/>
+                    <stop offset="50%"  stop-color="#f0b90b"/>
+                    <stop offset="75%"  stop-color="#8dc647"/>
+                    <stop offset="100%" stop-color="#16c784"/>
+                  </linearGradient>
+                </defs>
+                <line id="visual-needle" x1="60" y1="65" x2="60" y2="20" stroke="#e6edf3" stroke-width="2" stroke-linecap="round" transform="rotate(0,60,65)"/>
+                <circle cx="60" cy="65" r="4" fill="#e6edf3"/>
+              </svg>
+              <div class="gauge-text-wrap">
+                <div class="gauge-score" id="visual-gauge-score">–</div>
+                <span class="gauge-label" id="visual-gauge-label">–</span>
+              </div>
+            </div>
+
+            <!-- Standard Score View (shown for Altcoin Season or general indices) -->
+            <div id="visual-standard-wrap" style="text-align: center; display: none;">
+              <div class="custom-score-badge" id="visual-standard-score">–</div>
+              <div class="gauge-label" id="visual-standard-label">–</div>
+            </div>
+
+            <!-- Additional metrics details card -->
+            <div style="width: 100%; border-top: 1px solid var(--border); margin-top: 25px; padding-top: 20px;" id="visual-extra-details">
+              <!-- Extra dynamic key-values -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="js/ui/shader-bg.js"></script>
+  <script src="js/core/state.js"></script>
+  <script src="js/core/theme.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/pages/indexDetail.js"></script>
+</body>
+</html>

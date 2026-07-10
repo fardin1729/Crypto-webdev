@@ -1,0 +1,50 @@
+/* ═══ INDEX CARDS ROW ═══ */
+.index-cards-row { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.index-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px 12px; display: flex; flex-direction: column; gap: 6px; transition: border-color var(--transition), box-shadow var(--transition); overflow: hidden; cursor: pointer; }
+.index-card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-glow); }
+.index-card-top { display: flex; align-items: center; justify-content: space-between; }
+.index-card-label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+.index-card-arrow { opacity: 0.5; margin-left: 3px; }
+.index-card-change { font-size: 0.75rem; font-weight: 700; }
+.index-card-change.positive { color: var(--green); }
+.index-card-change.negative { color: var(--red); }
+.index-card-value { font-size: 1.3rem; font-weight: 800; font-family: var(--font-display); color: var(--text); line-height: 1.2; }
+.index-card-sub { display: flex; align-items: center; font-size: 0.65rem; color: var(--text-dim); margin-top: -2px; z-index: 2; position: relative; }
+.sub-label { margin-right: 3px; font-weight: 500; }
+.ml-2 { margin-left: 8px; }
+.index-card-sub-right { font-size: 0.65rem; color: var(--text-dim); font-weight: 500; }
+.index-sparkline { width: 100%; height: 48px; display: block; margin-top: auto; }
+
+/* Fear & Greed gauge */
+.index-card-gauge { justify-content: center; }
+.fg-gauge-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.fg-gauge-svg { width: 110px; height: 66px; overflow: visible; }
+.fg-score-wrap { display: flex; flex-direction: column; align-items: center; margin-top: -6px; }
+.fg-score { font-size: 1.5rem; font-weight: 800; font-family: var(--font-display); color: var(--text); line-height: 1; }
+.fg-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+
+/* Altcoin Season bar */
+.alt-score-row { display: flex; align-items: baseline; gap: 4px; }
+.alt-score-max { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+.alt-season-bar-wrap { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.alt-bar-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
+.alt-season-track { flex: 1; height: 8px; border-radius: 4px; background: var(--bg-3); position: relative; display: flex; align-items: center; overflow: visible; }
+.alt-season-fill-btc { height: 100%; background: #f0b90b; border-radius: 4px 0 0 4px; transition: width 0.6s ease; }
+.alt-season-fill-alt { height: 100%; background: var(--primary); border-radius: 0 4px 4px 0; flex: 1; transition: width 0.6s ease; }
+.alt-season-thumb { width: 14px; height: 14px; background: #fff; border-radius: 50%; border: 2px solid var(--bg-card); box-shadow: 0 0 0 2px var(--text-muted); flex-shrink: 0; z-index: 1; transition: left 0.6s ease; }
+
+@media (max-width: 1024px) { .index-cards-row { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 600px)  { .index-cards-row { grid-template-columns: 1fr; } }
+
+
+/* ═══ TICKER ═══ */
+.ticker-wrapper { background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; display: flex; align-items: center; overflow: hidden; }
+.ticker-label { flex-shrink: 0; padding: 0 20px; font-size: 0.75rem; font-weight: 700; color: var(--primary-light); text-transform: uppercase; letter-spacing: 1px; border-right: 1px solid var(--border); margin-right: 20px; white-space: nowrap; }
+.ticker-track { flex: 1; overflow: hidden; }
+.ticker-inner { display: flex; gap: 40px; animation: ticker 40s linear infinite; white-space: nowrap; }
+.ticker-item { display: flex; align-items: center; gap: 8px; flex-shrink: 0; font-size: 0.85rem; cursor: pointer; transition: opacity var(--transition); }
+.ticker-item:hover { opacity: 0.8; }
+.ticker-item img { width: 18px; height: 18px; border-radius: 50%; }
+.ticker-item-name { font-weight: 600; }
+.ticker-item-price { color: var(--text-dim); }
+.ticker-item-change { font-weight: 600; }

@@ -1,0 +1,14 @@
+/* ═══ RESET ═══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: none; background: none; font-family: var(--font); }
+img { max-width: 100%; }
+table { border-collapse: collapse; width: 100%; }
+
+/* ═══ UTILITIES ═══ */
+.container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+.gradient-text { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.positive { color: var(--green); }
+.negative { color: var(--red); }

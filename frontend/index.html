@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoinVista – Live Crypto Prices, Charts & Market Data</title>
+  <meta name="description" content="Track live cryptocurrency prices, market caps, trading volumes, and charts. Your go-to platform for real-time crypto market data." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/core/theme.css?v=9" />
+  <link rel="stylesheet" href="css/core/base.css?v=9" />
+  <link rel="stylesheet" href="css/core/layout.css?v=9" />
+  <link rel="stylesheet" href="css/core/animations.css?v=9" />
+  <link rel="stylesheet" href="css/components/components.css?v=9" />
+  <link rel="stylesheet" href="css/components/cards.css?v=9" />
+  <link rel="stylesheet" href="css/components/news.css?v=9" />
+  <link rel="stylesheet" href="css/components/modals.css?v=9" />
+</head>
+<body>
+
+  <!-- ═══ ANIMATED SHADER BACKGROUND ═══ -->
+  <div id="shader-bg-container" style="position: fixed; inset: 0; z-index: -3; overflow: hidden; pointer-events: none; background: #000;"></div>
+
+  <!-- ═══ NAVBAR ═══ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo" id="nav-logo">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="13" stroke="url(#logoGrad)" stroke-width="2"/>
+            <path d="M10 14 L14 8 L18 14 L14 20 Z" fill="url(#logoGrad)"/>
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="28" y2="28">
+                <stop offset="0%" stop-color="#7c3aed"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span>CoinVista</span>
+      </a>
+
+      <div class="nav-links" id="nav-links">
+        <a href="#" class="nav-link active" id="nav-home" data-view="markets">Explore Markets</a>
+        <a href="#" class="nav-link" id="nav-news" data-view="news">
+          <svg viewBox="0 0 16 16" fill="none" width="13" height="13" style="margin-right:4px;vertical-align:-2px"><rect x="1" y="2" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 6h8M4 9h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Insights
+        </a>
+      </div>
+
+      <div class="nav-actions" style="display: flex; align-items: center; gap: 16px;">
+        <div class="search-wrapper" id="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 20 20" fill="none">
+            <circle cx="8.5" cy="8.5" r="5.75" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M13 13L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input type="text" class="search-input" id="search-input" placeholder="What are you curious about today?" autocomplete="off" />
+          <div class="search-dropdown" id="search-dropdown"></div>
+        </div>
+
+        <button class="hamburger" id="hamburger" aria-label="Menu" style="margin-left: 10px;">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO / MARKET OVERVIEW ═══ -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Live Market Data
+        </div>
+        <h1 class="hero-title">
+          Track Every <span class="gradient-text">Crypto Asset</span><br/>In Real Time
+        </h1>
+        <p class="hero-subtitle">
+          Comprehensive market data, live prices, charts, and insights for 10,000+ cryptocurrencies.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-hero-primary" id="btn-explore">Explore Markets</button>
+          <button class="btn-hero-ghost" id="btn-trending">
+            <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+              <path d="M1 13L5 9L8 11L13 5L15 7V2H10L12 4L8 8.5L5 6.5L1 11Z" fill="currentColor" opacity="0.8"/>
+              <path d="M1 13L5 9L8 11L13 5L15 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Trending
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Index Cards -->
+      <div class="index-cards-row" id="stats-bar">
+
+        <!-- Market Cap Card -->
+        <div class="index-card" data-index="mcap">
+          <div class="index-card-top">
+            <span class="index-card-label">Market Cap <span class="index-card-arrow">›</span></span>
+            <span class="index-card-change positive" id="stat-mcap-change">–</span>
+          </div>
+          <div class="index-card-value" id="stat-mcap">–</div>
+          <div class="index-card-sub">
+            <span class="sub-label">24h Vol:</span> <span id="stat-mcap-vol">–</span>
+            <span class="sub-label ml-2">BTC Dom:</span> <span id="stat-mcap-btc">–</span>
+          </div>
+          <canvas class="index-sparkline" id="spark-mcap" height="48"></canvas>
+        </div>
+
+        <!-- Vista20 Card -->
+        <div class="index-card" data-index="vista20">
+          <div class="index-card-top">
+            <span class="index-card-label">Vista20 <span class="index-card-arrow">›</span></span>
+            <span class="index-card-change" id="stat-vista20-change">–</span>
+          </div>
+          <div class="index-card-value" id="stat-vista20">–</div>
+          <div class="index-card-sub">
+            <span class="sub-label">Top Gainer:</span> <span id="stat-vista-gainer">–</span>
+            <span class="sub-label ml-2">Top Loser:</span> <span id="stat-vista-loser">–</span>
+          </div>
+          <canvas class="index-sparkline" id="spark-vista20" height="48"></canvas>
+        </div>
+
+        <!-- Fear & Greed Card -->
+        <div class="index-card index-card-gauge" data-index="fg">
+          <div class="index-card-top" style="align-self: flex-start; width: 100%;">
+            <span class="index-card-label">Fear &amp; Greed <span class="index-card-arrow">›</span></span>
+            <div style="display:flex; flex-direction:column; align-items:flex-end;">
+              <span class="index-card-sub-right">Y'day: <span id="stat-fg-yday">–</span></span>
+              <span class="index-card-sub-right" style="margin-top:2px;">Last Wk: <span id="stat-fg-lastweek">–</span></span>
+            </div>
+          </div>
+          <div class="fg-gauge-wrap">
+            <svg class="fg-gauge-svg" viewBox="0 0 120 70">
+              <!-- track -->
+              <path d="M10,65 A52,52 0 0,1 110,65" fill="none" stroke="#21262d" stroke-width="10" stroke-linecap="round"/>
+              <!-- color segments -->
+              <path d="M10,65 A52,52 0 0,1 110,65" fill="none" stroke="url(#fgGrad)" stroke-width="10" stroke-linecap="round"/>
+              <defs>
+                <linearGradient id="fgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%"   stop-color="#ea3943"/>
+                  <stop offset="25%"  stop-color="#f0b90b"/>
+                  <stop offset="50%"  stop-color="#f0b90b"/>
+                  <stop offset="75%"  stop-color="#8dc647"/>
+                  <stop offset="100%" stop-color="#16c784"/>
+                </linearGradient>
+              </defs>
+              <!-- needle -->
+              <line id="fg-needle" x1="60" y1="65" x2="60" y2="20" stroke="#e6edf3" stroke-width="2" stroke-linecap="round"
+                    transform="rotate(0,60,65)"/>
+              <circle cx="60" cy="65" r="4" fill="#e6edf3"/>
+            </svg>
+            <div class="fg-score-wrap">
+              <span class="fg-score" id="stat-fg-score">–</span>
+              <span class="fg-label" id="stat-fg-label">–</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Altcoin Season Card -->
+        <div class="index-card" data-index="altcoin">
+          <div class="index-card-top" style="align-self: flex-start; width: 100%;">
+            <span class="index-card-label">Altcoin Season <span class="index-card-arrow">›</span></span>
+            <div style="display:flex; flex-direction:column; align-items:flex-end;">
+              <span class="index-card-sub-right">BTC Dom: <span id="stat-alt-btc-dom">–</span></span>
+              <span class="index-card-sub-right" id="stat-alt-season-label" style="margin-top:2px; font-weight:700;">–</span>
+            </div>
+          </div>
+          <div class="alt-score-row">
+            <span class="index-card-value" id="stat-alt-score">–</span>
+            <span class="alt-score-max">/100</span>
+          </div>
+          <div class="alt-season-bar-wrap">
+            <span class="alt-bar-label">Bitcoin</span>
+            <div class="alt-season-track">
+              <div class="alt-season-fill-btc" id="alt-fill-btc"></div>
+              <div class="alt-season-thumb" id="alt-thumb"></div>
+              <div class="alt-season-fill-alt" id="alt-fill-alt"></div>
+            </div>
+            <span class="alt-bar-label">Altcoin</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TRENDING TICKER ═══ -->
+  <div class="ticker-wrapper" id="ticker-wrapper">
+    <div class="ticker-label">🔥 Trending</div>
+    <div class="ticker-track" id="ticker-track">
+      <div class="ticker-inner" id="ticker-inner"></div>
+    </div>
+  </div>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <main class="main-content" id="main-content">
+    <div class="container">
+
+      <!-- Filter Bar -->
+      <div class="filter-bar" id="filter-bar">
+        <div class="filter-tabs">
+          <button class="filter-tab active" id="tab-all" data-tab="all">All Coins</button>
+          <button class="filter-tab" id="tab-defi" data-tab="defi">DeFi</button>
+          <button class="filter-tab" id="tab-layer1" data-tab="layer1">Layer 1</button>
+          <button class="filter-tab" id="tab-nft" data-tab="nft">NFT & Gaming</button>
+          <button class="filter-tab" id="tab-stablecoins" data-tab="stablecoins">Stablecoins</button>
+        </div>
+        <div class="filter-controls">
+          <select class="filter-select" id="currency-select">
+            <option value="usd">USD ($)</option>
+            <option value="eur">EUR (€)</option>
+            <option value="btc">BTC (₿)</option>
+            <option value="eth">ETH (Ξ)</option>
+          </select>
+          <select class="filter-select" id="perpage-select" style="display: none;">
+            <option value="100">100 / page</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Coins Table -->
+      <div class="table-container" id="table-container">
+        <div class="table-loading" id="table-loading">
+          <div class="spinner"></div>
+          <p>Fetching live market data…</p>
+        </div>
+        <table class="coins-table" id="coins-table" style="display:none">
+          <thead>
+            <tr>
+              <th class="col-rank sortable" data-sort="rank"># <svg viewBox="0 0 10 10" width="8" height="8"><path d="M5 2L8 6H2Z" fill="currentColor"/></svg></th>
+              <th class="col-coin">Coin</th>
+              <th class="col-price sortable" data-sort="price">Price <svg viewBox="0 0 10 10" width="8" height="8"><path d="M5 2L8 6H2Z" fill="currentColor"/></svg></th>
+              <th class="col-change1h sortable" data-sort="change1h">1h % <svg viewBox="0 0 10 10" width="8" height="8"><path d="M5 2L8 6H2Z" fill="currentColor"/></svg></th>
+              <th class="col-change24h sortable" data-sort="change24h">24h % <svg viewBox="0 0 10 10" width="8" height="8"><path d="M5 2L8 6H2Z" fill="currentColor"/></svg></th>
+              <th class="col-change7d sortable" data-sort="change7d">7d % <svg viewBox="0 0 10 10" width="8" height="8"><path d="M5 2L8 6H2Z" fill="currentColor"/></svg></th>
+              <th class="col-mcap sortable" data-sort="mcap">Market Cap <svg viewBox="0 0 10 10" width="8" height="8"><path d="M5 2L8 6H2Z" fill="currentColor"/></svg></th>
+              <th class="col-volume">24h Volume</th>
+              <th class="col-supply">Circulating Supply</th>
+              <th class="col-chart">7d Chart</th>
+            </tr>
+          </thead>
+          <tbody id="coins-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Pagination (Hidden as we show top 100 coins directly) -->
+      <div class="pagination" id="pagination" style="display: none !important;">
+        <button class="page-btn" id="btn-prev" disabled>
+          <svg viewBox="0 0 16 16" width="14" height="14"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          Prev
+        </button>
+        <div class="page-numbers" id="page-numbers"></div>
+        <button class="page-btn" id="btn-next">
+          Next
+          <svg viewBox="0 0 16 16" width="14" height="14"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ NEWS SECTION ═══ -->
+  <section class="news-section" id="news-section" style="display:none">
+    <div class="container">
+      <div class="news-header">
+        <div>
+          <h2 class="news-title">Crypto <span class="gradient-text">Market News</span></h2>
+          <p class="news-subtitle">Latest headlines from the crypto world, updated in real time.</p>
+        </div>
+        <div class="news-filters">
+          <button class="news-filter-btn active" id="nf-all" data-cat="ALL">All</button>
+          <button class="news-filter-btn" id="nf-btc" data-cat="BTC">Bitcoin</button>
+          <button class="news-filter-btn" id="nf-eth" data-cat="ETH">Ethereum</button>
+          <button class="news-filter-btn" id="nf-defi" data-cat="DEFI">DeFi</button>
+          <button class="news-filter-btn" id="nf-nft" data-cat="NFT">NFT</button>
+        </div>
+      </div>
+      <div class="news-loading" id="news-loading">
+        <div class="spinner"></div>
+        <p>Loading latest news…</p>
+      </div>
+      <div class="news-grid" id="news-grid"></div>
+      <div class="news-load-more" id="news-load-more" style="display:none">
+        <button class="btn-load-more" id="btn-load-more">Load More Articles</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ MODAL OVERLAY ═══ -->
+  <div class="modal-overlay" id="modal-overlay">
+    
+    <!-- COIN DETAIL MODAL -->
+    <div class="modal" id="coin-modal">
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+          <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="modal-header" id="modal-header"></div>
+      <div class="modal-body" id="modal-body"></div>
+
+      <!-- ═══ LSTM PREDICTION PANEL ═══ -->
+      <div class="predict-panel" id="predict-panel" style="display:none">
+        <div class="predict-panel-header">
+          <div class="predict-title-wrap">
+            <span class="predict-badge">📈 LSTM Model</span>
+            <div>
+              <div class="predict-heading">LSTM Price Prediction</div>
+              <div class="predict-sub">Neural network trained on real historical data</div>
+            </div>
+          </div>
+          <button class="btn-run-predict" id="btn-run-predict">Run Prediction</button>
+        </div>
+
+        <div id="predict-working" style="display:none">
+          <div class="predict-progress-bar"><div class="predict-progress-fill" id="predict-fill"></div></div>
+          <div class="predict-progress-label" id="predict-label">Initialising…</div>
+        </div>
+
+        <div id="predict-result" style="display:none">
+          <div class="predict-stats-row" id="predict-stats"></div>
+          <div class="predict-chart-wrap"><canvas id="predict-chart"></canvas></div>
+        </div>
+
+        <div id="predict-error" class="predict-error" style="display:none"></div>
+
+        <p class="predict-disclaimer">⚠️ For educational purposes only — not financial advice.</p>
+      </div>
+    </div>
+
+    <!-- INDEX DETAIL MODAL -->
+    <div class="modal" id="index-modal" style="display:none;">
+      <button class="modal-close" id="index-modal-close" aria-label="Close">
+        <svg viewBox="0 0 16 16" fill="none" width="16" height="16">
+          <path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="modal-header" id="index-modal-header"></div>
+      <div class="modal-body" id="index-modal-body"></div>
+    </div>
+
+  </div>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo">
+            <div class="logo-icon">
+              <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="14" r="13" stroke="url(#footerGrad)" stroke-width="2"/>
+                <path d="M10 14 L14 8 L18 14 L14 20 Z" fill="url(#footerGrad)"/>
+                <defs>
+                  <linearGradient id="footerGrad" x1="0" y1="0" x2="28" y2="28">
+                    <stop offset="0%" stop-color="#7c3aed"/>
+                    <stop offset="100%" stop-color="#06b6d4"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <span>CoinVista</span>
+          </div>
+          <p class="footer-desc">Your comprehensive platform for real-time cryptocurrency data, charts, and market intelligence.</p>
+          <p class="footer-powered">Powered by <a href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko API</a></p>
+        </div>
+
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 CoinVista. All rights reserved. Data provided for informational purposes only. Not financial advice.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chart.js + TensorFlow.js CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="js/ui/shader-bg.js"></script>
+  
+  <!-- Core Scripts -->
+  <script src="js/core/state.js?v=9"></script>
+  <script src="js/core/utils.js?v=9"></script>
+  <script src="js/core/theme.js?v=9"></script>
+  
+  <!-- UI Components -->
+  <script src="js/ui/modals.js?v=9"></script>
+  <script src="js/ui/indexCards.js?v=9"></script>
+  <script src="js/ui/coinTable.js?v=9"></script>
+
+  <!-- Services -->
+  <script src="js/services/search.js?v=9"></script>
+  <script src="js/services/news.js?v=9"></script>
+  <script src="js/services/prediction.js?v=9"></script>
+  
+  <!-- App Init -->
+  <script src="js/core/app.js?v=9"></script>
+</body>
+</html>
