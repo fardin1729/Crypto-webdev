@@ -73,7 +73,19 @@ self.onmessage = async ({ data: { prices, dates, epochs, batch } }) => {
     }
     model.dispose();
 
-    const futurePrices = futureNorm.map(v => denorm(v, min, rng));
+    const rawFuturePrices = futureNorm.map(v => denorm(v, min, rng));
+    
+    // Apply Exponential Moving Average (EMA) anchoring for visual smoothness
+    let lastRealPrice = prices[prices.length - 1];
+    const futurePrices = [];
+    let prev = lastRealPrice;
+    const alpha = 0.35; // Smoothing factor: higher = more responsive, lower = smoother
+    
+    for (let i = 0; i < rawFuturePrices.length; i++) {
+      prev = alpha * rawFuturePrices[i] + (1 - alpha) * prev;
+      futurePrices.push(prev);
+    }
+
     const MS_DAY = 86400000;
     const lastDate = dates[dates.length - 1];
     const futureDates = Array.from({ length: HORIZON }, (_, i) => lastDate + MS_DAY * (i + 1));
