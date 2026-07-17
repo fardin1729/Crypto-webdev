@@ -30,9 +30,12 @@ async function fetchWithCache(url, key) {
   
   try {
     console.log('Fetching from API:', url);
-    const response = await axios.get(url, {
-      headers: { 'Accept': 'application/json', 'User-Agent': 'CoinVista/1.0' }
-    });
+    const headers = { 'Accept': 'application/json', 'User-Agent': 'CoinVista/1.0' };
+    if (process.env.COINGECKO_API_KEY && url.includes('coingecko.com')) {
+      headers['x-cg-demo-api-key'] = process.env.COINGECKO_API_KEY;
+    }
+    
+    const response = await axios.get(url, { headers });
     
     cache.set(key, { data: response.data, timestamp: Date.now() });
     saveCacheToDisk();
