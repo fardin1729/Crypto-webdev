@@ -22,11 +22,11 @@ https://youtu.be/...
 ![Charts](Assets/Charts.png)
 
 
-![Prediction](Assets/Prediction.png)
+![Predictions](Assets/Predictions.png)
 
-![Insights](assets/Insights.png)
+![Insights](Assets/Insights.png)
 
-![Indices](assets/Indices.png)
+![Indices](Assets/Indices.png)
 
 ## Tech Stack
 
