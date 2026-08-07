@@ -24,9 +24,9 @@ https://youtu.be/...
 
 ![Prediction](Assets/Prediction.png)
 
-![News](assets/Inshigts.png)
+![Insights](assets/Insights.png)
 
-![Watchlist](assets/Indices.png)
+![Indices](assets/Indices.png)
 
 ## Tech Stack
 
