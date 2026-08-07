@@ -18,13 +18,15 @@ https://youtu.be/...
 
 ## Screenshots
 
-![Dashboard](assets/dashboard.png)
+![Dashboard](Assets/Dashboards.png)
+![Charts](Assets/Charts.png)
 
-![Prediction](assets/prediction.png)
 
-![News](assets/news.png)
+![Prediction](Assets/Prediction.png)
 
-![Watchlist](assets/watchlist.png)
+![News](assets/Inshigts.png)
+
+![Watchlist](assets/Indices.png)
 
 ## Tech Stack
 
