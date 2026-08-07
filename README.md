@@ -18,7 +18,7 @@ https://youtu.be/...
 
 ## Screenshots
 
-![Dashboard](Assets/Dashboards.png)
+![Dashboard](Assets/Dashboard.png)
 ![Charts](Assets/Charts.png)
 
 
