@@ -14,7 +14,7 @@ AI-powered cryptocurrency analytics dashboard with real-time market data and pri
 ## Demo
 
 🎥 Demo Video:
-https://youtu.be/...
+https://youtu.be/4zWKtOgK6bY
 
 ## Screenshots
 
